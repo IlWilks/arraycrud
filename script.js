@@ -1,10 +1,10 @@
 console.log("script.js loaded");
 
-let player1 = {name: "Jankos", team: "G2", position: "Jungler" }
-let player2 = {name: "Perkz", team: "Cloud9", position: "Mid Laner" }
+let player1 = {name: "Jankos", team: "G2", position: "Jungler", picture: `<img src="https://static.wikia.nocookie.net/lolesports_gamepedia_en/images/c/c8/G2_Jankos_2020_WC.png/revision/latest?cb=20201003064135" width="300">`}
+let player2 = {name: "Perkz", team: "Cloud9", position: "Mid Laner", picture: `<img src="https://static.wikia.nocookie.net/lolesports_gamepedia_en/images/f/f3/G2_Perkz_2020_WC.png/revision/latest?cb=20201003064142" width="300">` }
 
 let state = {
-  headerText: 'Hall of Fame',
+  headerText: 'League of Legends Hall of Fame',
   players: [player1, player2],
   sortBy: "name",
 };
@@ -14,7 +14,8 @@ const addPlayer = () => {
   let name = prompt("Player Name:");
   let team = prompt("Player Team:");
   let position = prompt("Player Position:");
-  let newPlayer = {name: name, team: team, position: position};
+  let picture = prompt("Player Picture url:");
+  let newPlayer = {name: name, team: team, position: position, picture: `<img src=${picture} Width="300"`};
   state.players.push(newPlayer);
   render();
 };
@@ -41,6 +42,14 @@ const updatePlayer = (index) => {
   render();
 };
 
+const updatePicture = (index) => {
+  console.log("Picture update");
+  console.log(index);
+  let url = prompt("Enter picture url");
+  state.players[index].picture = `<img src="${url}" width="300">`;
+  render();
+};
+
 const renderPlayers = () => {
   // dostuff
   let htmlString = `<div class='list'>`;
@@ -49,7 +58,8 @@ const renderPlayers = () => {
     //do stuff
     htmlString += `<div class='person'>
                     <div onclick='updatePlayer(${index})'>${index+1}). ${person.name} Team:${person.team} Position:${person.position}</div>
-                    <button onclick='removePlayer(${index})'>delete</button>
+                    <div onclick='updatePicture(${index})'>${person.picture}</div>
+                    <button onclick='removePlayer(${index})'>Delete</button>
                    </div>`;
   });
   htmlString += `</div>`;
@@ -58,7 +68,7 @@ const renderPlayers = () => {
 const render = () => {
   console.log("render called");
   let root = document.getElementById("root");
-  let htmlString = `<h1>${state.headerText}</h1><br/>`;
+  let htmlString = `<h1 class="header">${state.headerText}</h1><br/>`;
   htmlString += `<button id='add' onclick='addPlayer()'>Add Player</button>`;
   htmlString += renderPlayers();
   root.innerHTML = htmlString;
